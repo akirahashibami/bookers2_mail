@@ -73,6 +73,11 @@ class User < ApplicationRecord
   # :addressを登録した際にgeocoderが緯度、経度のカラムにも自動的に値を入れてくれるようになります。
   # この記述がないとaddressを登録してもlatitude(緯度),longitude(経度)が登録されなくなってしまう(nillになる)ので注意です。
 
+  after_create :send_welcome_mail
+  def send_welcome_mail
+    UserMailer.user_welcome_mail(self).deliver
+  end
+
 
   attachment :profile_image, destroy: false
 
